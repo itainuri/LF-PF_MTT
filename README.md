@@ -1,5 +1,5 @@
 # NA-APF official
-inference implementation of the Neural Augmented Auxiliary Particle Filter for multi sub-state tracking, from the paper: 
+Implementation of the Neural Augmented Auxiliary Particle Filter for multi sub-state tracking, from the paper: 
 
 Itai Nuri and Nir Shlezinger, 2024, "Learning Flock: Enhancing Sets of Particles for
 Multi Sub-State Particle Filtering with Neural
