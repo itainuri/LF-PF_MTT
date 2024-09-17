@@ -28,12 +28,16 @@ We experimentally show the improvements in performance, robustness, and latency 
   
 # Introduction
 The provided code supports traning and inferencing the experiments as described in [1].
-On [1] we compare our algorithm to two main algorithms, and the experimental settings we used for each comparison are taken from their respective setting.
-- [2] L. Ubeda-Medina, A. F. Garcia-Fernandez, and J. Grajal, “Adaptive auxiliary particle filter for track-before-detect with multiple targets, ”IEEE Trans. Aerosp. Electron. Syst., vol. 53, no. 5, pp. 2317–2330, 2017. 
-\- MTT radar target tracking on chanching number of particles and targets. The code provides a python version of the APP algorithm as well as a LF augmented APP, LF-APP.  
-* [3] F. Gama, N. Zilberstein, R. G. Baraniuk, and S. Segarra, “Unrolling particles: Unsupervised learning of sampling distributions,” in IEEE International conference on Acoustics, Speech and Signal Processing (ICASSP), 2022, pp. 5498–5502.
-\- Single 10-dimentinal state tracking using Sequential Importance Sampling (SIS) PF as described on [3] and with implementation based on the SIS [implimentation](https://github.com/fgfgama/unrolling-particles) of [3]. 
-All unrolled PF and LF-UrPF variations as well as the SIS-PF comparisons mentioned in [1] are realized on a seperate enviromnemt based  on [3] [implimentation](https://github.com/fgfgama/unrolling-particles). 
+On [1] we compare our algorithm to two main algorithms:
+- [2] L. Ubeda-Medina, A. F. Garcia-Fernandez, and J. Grajal, “Adaptive auxiliary particle filter for track-before-detect with multiple targets, ”IEEE Trans. Aerosp. Electron. Syst., vol. 53, no. 5, pp. 2317–2330, 2017.  
+- [3] F. Gama, N. Zilberstein, R. G. Baraniuk, and S. Segarra, “Unrolling particles: Unsupervised learning of sampling distributions,” in IEEE International conference on Acoustics, Speech and Signal Processing (ICASSP), 2022, pp. 5498–5502.
+
+The experimental settings we used for each comparison are taken from their respective works:
+- [2] describes an MTT radar target tracking on changing number of particles and targets. Our code provides a python version of the APP algorithm as well as a LF augmented APP, LF-APP.
+- [3] describes a comparison between the Sequential Importance Sampling (SIS) PF and their proposed DNN augmented Unrolling PF (UrPF) on a single 10-dimentinal state tracking experiment. Our code implements the SIS as described on [3] and based on their [proposed realization](https://github.com/fgfgama/unrolling-particles) for it. 
+
+  *The cmparison sesults described in [1] between the UrPF, the LF-UrPF variations and the SIS-PF variations are realized on a seperate enviromnemt that is based  on the same [3] implimentation (linked above). 
+
  
 Our code is described on the code provided by [3] accessed in
 It presents tracking results (and compares) APP and LF-AP and illustrates tracking accuracy examples and sensors response.
@@ -42,10 +46,11 @@ it also contains the test set trajectories and enables the creations of new traj
 # Terminology
 - APF - Auxiliary Particle Filter 
 - APP - Auxiliary Parallel Partition (PF) (single target): APF + Kalman Filter for velocities 
-- NA-APF - Neural Augmented APF: APF + particles and weights correction DNN + Kalman Filter
+- LF-APP - Learning Flock Augmented APP: APF + particles and weights correction LF block + Kalman Filter.
+- LF-SIS - Learning Flock Augmented SIS PF: SIS iteration followed by particles and weights correction LF block.
 
 # python_code directory
-Contains all files needed to run simulations. The structure of the data and python classes are designed for easy user specific adaptations. 
+Contains all files needed to train and inference the APP and SIS PFs and their LF augmented versions. The structure of the data and python classes are designed for easy user specific adaptations. 
 To adjust the code edit the content of the functions of the different classes described next.  
 
 ## Data directories 
@@ -63,6 +68,7 @@ new offsets can be created with the respective configuration flags and by settin
 Includes the saved weights for both accurate and mismatched sensors settings. 
 should be loaded for optimal accuracy on respective settings.
 ## Python Files
+* Models.py - APP('attention') or Unrolling('unrolling') mode. different classes are loaded for each mode.
 * OptConfig.py - default simulation configurations.
 * ins_runner.py - parses command line and OptConfig.py for the simulation flags and starts simulation on Instructor.
 * MotionModel - used to propagte particles from one step (apf) and to cretae new trajectories (target_traj_func).
@@ -71,8 +77,8 @@ should be loaded for optimal accuracy on respective settings.
 * BatchMaker.py - loads the ground truth trajectories for the simulation from the files, and creates input and expected output pairs.
 * Instructor.py - contains the simulation class Instructor, runs PfBatchHandler.
 * KalmanFIlter.py - runs a single step of Kalman Filter.
-* apf.py - runs a single step of the APF or NA-APF.
-* AppModel.py - runs a single iteration of APF/NA-APF + Kalman Fiter.
+* Atrapp.py - runs a single step of the APP or LF-APP.
+* AtrappModel.py - runs a single iteration of APP/LF-APP.
 * NN_blocks.py - holds the DNN modules.
 * BatchData.py - holds the particles and weights of an iteration (used in PfBatchHandler).
 * PfBatchHandler.py - runs a full batch trajectory and calculates OSPA and loss.
@@ -91,7 +97,7 @@ default paths are in the configurations file, OptConfig.py:
 model_mode, path2proj, proj2datasets_path, proj2ckpnts_load_path, att_state_dict_to_load_str
 
 ## Execution
-The file run_ins_runner.bss containes a training python command as used for training the MTT results presented on the paper.
+The file run_ins_runner.bss containes a training python command as used for training the MTT APP to get the results presented on the paper.
 
 
 ## Simulation Flags
@@ -99,7 +105,7 @@ The file run_ins_runner.bss containes a training python command as used for trai
 * model_mode  # only supports "attention", to add different settings add additional modes
 * curr_device_str # device 'cuda' or 'cpu'
 * make_batch_device_str # make batch device string 'cuda' or 'cpu'
-* make_new_trajs # 1- creates new trajectories, 0-runs simulation
+* make_new_trajs # 1-creates new trajectories, 0-runs simulation
 * state_vector_dim # dimnsion of the state vector
 * nof_steps  # number of time steps for simulation
 * nof_parts # number of particles for simulation
@@ -140,7 +146,6 @@ The file run_ins_runner.bss containes a training python command as used for trai
 
 ## Training commands
 MTT training:
-* set model to SA1_016_v24MTT
 * set in Model.py: model_mode = "attention"
 * run command:
 python ins_runner.py with desired flags as in run_ins_runner.bss
