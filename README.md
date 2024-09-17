@@ -34,7 +34,7 @@ On [1] we compare our algorithm to two main algorithms:
 
 The experimental settings we used for each comparison are taken from their respective works:
 - [2] describes an MTT radar target tracking on changing number of particles and targets. Our code provides a python version of the APP algorithm as well as a LF augmented APP, LF-APP.
-- [3] describes a comparison between the Sequential Importance Sampling (SIS) PF and their proposed DNN augmented Unrolling PF (UrPF) on a single 10-dimentinal state tracking experiment. Our code implements the SIS as described on [3] and based on their [proposed realization](https://github.com/fgfgama/unrolling-particles) for it. 
+- [3] describes a comparison between the Sequential Importance Sampling (SIS) PF and their proposed DNN augmented Unrolling PF (UrPF) on a single 10-dimentinal state tracking experiment. Our code implements the SIS as described in [3] and based on their [proposed realization](https://github.com/fgfgama/unrolling-particles) for it. 
 
   *The cmparison sesults described in [1] between the UrPF, the LF-UrPF variations and the SIS-PF variations are realized on a seperate enviromnemt that is based  on the same [3] implimentation (linked above). 
 
@@ -144,6 +144,7 @@ The file run_ins_runner.bss containes a training python command as used for trai
 * path2proj, proj2datasets_path, proj2ckpnts_load_path # paths for all loaded data
 * att_state_dict_to_load_str # DNN saved weights file name ("mismatched_sensor_array_NN_weights.pt" or "accurate_sensor_array_NN_weights.pt")
 
+more flags are detailed in OptConfig.py.
 ## Training commands
 MTT training:
 * set in Model.py: model_mode = "attention"
