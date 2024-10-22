@@ -79,7 +79,7 @@ class HeatMap(object):
             print("max small_stds : " + str(torch.max(small_stds)))
             print("min small_stds : " + str(torch.min(small_stds)))
         curr_nof_parts = full_parts.shape[0]
-        if not bdcast_grids_2all_dims:
+        if not bdcast_grids_2all_dims or type(grids) == list:
             xyz_shape_ones = 1,
         else:
             xyz_shape_ones = tuple(np.ones((grids.shape[0],),dtype=np.int))

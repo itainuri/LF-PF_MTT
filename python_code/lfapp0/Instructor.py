@@ -185,7 +185,7 @@ class Instructor:
 
         bool_l  = [ self.opt.debug_mode_en, self.opt.do_inference,  attention_network]
         true_l  = ['debug'               , 'inference'          , 'att'               ]
-        false_l = ['debug_mode_en'       , 'do_inference'       , '_NO_STRING_'       ]
+        false_l = ['debug_mode_en'       , 'do_inference'       , 'att'       ]
 
         for i in np.arange(len(bool_l)):
             if bool_l[i]:

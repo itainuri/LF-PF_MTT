@@ -48,7 +48,7 @@ def get_multi_dim_nrmal_sampled_pnts(self, means, big_stds, curr_sensor_frame, m
     #   10              |  0.0002
     pnts = torch.transpose(pnts,0,1)
     bdcast_grids_2all_dims = False
-    pnts_sampling_distribution = self.hm.get_big_gaussian_peaks_from_parts_wo_grad_per_targ(pnts, bdcast_grids_2all_dims, X_pnts,Y_pnts, means, idx_in_batch, ts_idx, big_stds)
+    pnts_sampling_distribution = self.hm.get_big_gaussian_peaks_from_parts_wo_grad_per_targ(pnts, bdcast_grids_2all_dims, means, idx_in_batch, ts_idx, big_stds)
     pnts_sampling_distribution = pnts_sampling_distribution/torch.sum(pnts_sampling_distribution,dim=1)
     return pnts, pnts_sampling_distribution
 
