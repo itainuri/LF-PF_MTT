@@ -58,7 +58,7 @@ The structure of the data and python classes are designed for easy user specific
 To adjust the code edit the content of the functions of the different classes described next.
 
 ## Data directories 
-includes the ground truth trajectories, the sensors' locations offsets, and the DNN weights.
+includes the ground truth trajectories, the sensors' locations offsets, and the DNN weights, and Unrolling files directory
 
 ### particles 
 Includes the ground truth targets trajectories , created according to [2] ([3] trajectories are created on the fly), the 10,000 testing trajectories of the paper.
@@ -72,6 +72,9 @@ new offsets can be created with the respective configuration flags and by settin
 ### state_dict
 Includes the saved weights for both accurate and mismatched sensors settings. 
 should be loaded for optimal accuracy on respective settings.
+
+### Unrolling
+Includes all firles for the Unrolling experiment as well as the motion model on directory: Unrolling/saved_mm_params/
 
 ## Python Files
 * Models.py - APP('attention') or Unrolling('unrolling') mode. different classes are loaded for each mode.
@@ -89,6 +92,15 @@ should be loaded for optimal accuracy on respective settings.
 * BatchData.py - holds the particles and weights of an iteration (used in PfBatchHandler).
 * PfBatchHandler.py - runs a full batch trajectory and calculates OSPA and loss.
 
+## Python Unrolling Files
+* UrOptConfig.py - default simulation configurations, currently inferencing example with saved weights on the three scenarios and 5 SNRs.
+* UrMotionModel - loads the motion model from "Unrolling/saved_mm_params/", creates trajectories on the fly and used to  propagte particles ofn the SISPF and LF-SISPF. 
+* UrBatchMaker.py - creates ground truth trajectories for the simulation from the files, and creates input and expected output pairs.
+* UnrollignModel.py - runs a single iteration of SISPF/LF-SISPF.
+* loss.py, miscTools.py, graphTools.py, ur_partilces.py original experimet files based on [UrPF project](https://github.com/fgfgama/unrolling-particles) and used in the [3] experimet in "Unrolling/".
+* unrolling_params.py - general and specific experimet configurations.
+* unrolling_state_dict_strs.py - configures the saved weights file name.
+ 
 # Simulation
 copy the content of the directory "python_code" to a directory in your project directory.
 ## Environment Main Packages Versions
@@ -98,13 +110,20 @@ copy the content of the directory "python_code" to a directory in your project d
     matplotlib	3.6.1
 
 ## Paths Definitions
-default paths are in the configurations file, OptConfig.py:
+default paths are in the configurations file, OptConfig.py/UrOptConfig.py:
 
 model_mode, path2proj, proj2datasets_path, proj2ckpnts_load_path, att_state_dict_to_load_str
 
 ## Execution
+Models.py configures experiment APP/UrSIS (attention/unrollling).
+### APP[2]
 The file run_ins_runner.bss containes a training python command as used for training the MTT LF-APP to get the results presented on the paper. 
-The default configuration (as in Models.py and OptConfig.py) inferences APP and LF-APP (with pretrained weights of [1]) with 4 targets.
+The default configuration (as in OptConfig.py) inferences APP and LF-APP (with pretrained weights of [1]) with 4 targets.
+
+### SIS[3]
+The file run_ins_runner_ur.bss containes a training python command as used for training the LF-UrSIS to get the results presented on the paper. 
+The default configuration (as in UrOptConfig.py) inferences SISPF and LF-SISPF (with pretrained weights from [1]).
+
 
 ## Simulation Flags
 
