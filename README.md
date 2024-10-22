@@ -72,7 +72,7 @@ Includes the saved weights for both accurate and mismatched sensors settings.
 should be loaded for optimal accuracy on respective settings.
 ## Python Files
 * Models.py - APP('attention') or Unrolling('unrolling') mode. different classes are loaded for each mode.
-* OptConfig.py - default simulation configurations.
+* OptConfig.py - default simulation configurations, currently inferencing example with saved weights and with 4 targets.
 * ins_runner.py - parses command line and OptConfig.py for the simulation flags and starts simulation on Instructor.
 * MotionModel - used to propagte particles from one step (apf) and to cretae new trajectories (target_traj_func).
 * SensorModel - creates a sensor response to a target with specific state. used for measuring (apf) and for creating sensor input on simulation (BatchMaker).
