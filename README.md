@@ -100,7 +100,7 @@ default paths are in the configurations file, OptConfig.py:
 model_mode, path2proj, proj2datasets_path, proj2ckpnts_load_path, att_state_dict_to_load_str
 
 ## Execution
-The file run_ins_runner.bss containes a training python command as used for training the MTT APP to get the results presented on the paper.
+The file run_ins_runner.bss containes a training python command as used for training the MTT LF-APP to get the results presented on the paper.
 The default configuration (as in Models.py and OptConfig.py) inferences APP and LF-APP (with pretrained weights of [1]) with 4 targets.
 
 
