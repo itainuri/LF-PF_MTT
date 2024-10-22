@@ -1,6 +1,5 @@
 #SA1_016_v24MTT:
 att_state_dict_to_load_str1 = "accurate_sensor_array_NN_weights_MTT.pt"
-att_state_dict_to_load_str1 = "ff_2024_09_09_002641_2024_09_09_002646_att_epoch1_dice-0.5871_best.pt"
 #att_state_dict_to_load_str1 = ".pt"
 modelmode = {
     "unrolling": "unrolling",
@@ -20,8 +19,8 @@ class OptConfig(FrozenClass):
     __isfrozen = False
     def __init__(self):
         self.only_save_nn3_from_state_dict = 0  # saves state_dict of nn3 from att_state_dict_to_load_str on the same name in only_save_nn3_absolute_folder_path (for unrolling for instance)
-        self.only_save_nn3_absolute_folder_path ="C:\\Users\\itainuri\\PycharmProjects\\urolling\\unrolling_lfpf\\state_dict\\" #TODO add to LINUX run
-        self.only_save_nn3_absolute_folder_path ="C:\\Users\\itainuri\\PycharmProjects\\LF-PF_MTT\\lfpf0\\nn3\\" #TODO add to LINUX run
+        self.only_save_nn3_absolute_folder_path ="C:\\Users\\itainuri\\PycharmProjects\\urolling\\unrolling_lfpf\\state_dict\\"
+        self.only_save_nn3_absolute_folder_path ="C:\\Users\\itainuri\\PycharmProjects\\LF-PF_MTT\\lfpf0\\nn3\\"
         self.proj2ckpnts_load_path = './state_dict/'  # base path for load checkpoints
         self.proj2ckpnts_save_path = './state_dict/' # base path for save checkpoints
         self.use_ospa_for_loss = 1 # include OSPA for the loss on training
@@ -57,23 +56,16 @@ class OptConfig(FrozenClass):
         self.heatmap_max_small_std = 2.0  # train, heatmap, small std is std of the small kerenels of the LF-PF (K_{j,i}) relevant if  heatmap_desired_use_ref_hm_and_not_gaussian=True, need to set maximal std so that not to wide  for the widest meshgrid  (too narrow small std hard coded, change in code)
         self.heatmap_gauss_location_is_gt_and_not_estimation_ratio = 1.0 # train, heatmap, relevant if heatmap_desired_use_ref_hm_and_not_gaussian=False otherwise its 1.0, set to 0.3 to have some overlap beween p_theta and p_oracle for the heatmap loss
         self.heatmap_desired_loc_use_ref_as_gt = 1
-        self.sinkhorn_nof_iters = 1000 # sinkhorn loss instead of heatmap (kind of simplified earthmover loss)
-        self.sinkhorn_epsilon = 0.01
-        self.sinkhorn_ref_nof_parts = 100
         self.nof_steps =20 # number of timestep for train and test (not for validation)
-        self.do_inference =0 # inference with test set and not train
+        self.do_inference =1 # inference with test set and not train
         self.debug_mode_en =0# for debug, performs some tests (nan/ sanity checks) and enables some figures
         self.do_paint_batch = 0 # paints batches, inputs and outputs, only on debug_mode_en=True
         self.heatmap_paint_heatmaps = 1 # paint heatmaps (heatmaps are used only on training)
-
         self.train_nof_tss_for_subbatch = 1 #number of time-steps to agregate loss before backproping. train_sb_lost_targ_dist is checked between sub-batches
         self.train_sb_nof_tss_with_grad = 100 # #TODO delete
         self.train_batch_width_with_grad = 1 #number of trajectories for parallel training to calculate loss+backprop (out of batch size)
         self.train_nof_batch_width_per_sb = 1 #number of widths to loss+backprop on each time-step sb before moving to next sb (the reminder of trajectories are just advanced
-        self.train_sb_lost_targ_dist = 15.5 #distance for and sub-state to eliminate trajectory from training for the batch checked every train_nof_tss_for_subbatch time-steps
-        self.train_sb_lost_targ_dist = 19.0
-        self.train_sb_lost_targ_dist = 119.0
-        self.train_sb_lost_targ_dist = 1000.0
+        self.train_sb_lost_targ_dist = 10.0 #distance for and sub-state to eliminate trajectory from training for the batch checked every train_nof_tss_for_subbatch time-steps
         self.train_tss_with_grad_min_idx = 0 # minimal index to train on
         self.train_loss_type_on_eval = "none" # loss on eavluation (needs to be 'none')
 
@@ -82,19 +74,19 @@ class OptConfig(FrozenClass):
         self.inaccurate_sensors_ref_sensor_model_is_accurate = 0 # refence model knows/doent know the changed sensors locations
         self.nof_targs_list = 1, 3, 5, 8 # MTT, optional nof targets on training with probs nof_targs_probs
         self.nof_targs_probs = 3, 3, 3, 1 #MTT, probabilities of nof targets in nof_targs_list on training
-        self.nof_targs_list = 1,
-        self.nof_targs_probs = 1,
         self.nof_targs_val = 4 # nof targets on validation on training
 
-        if self.do_inference == 1 and self.debug_mode_en == 1:
-            self.add_loss_type = "heatmap"
-        if self.do_inference == 1 and self.debug_mode_en == 0:
-            self.add_loss_type = "none"
+        if self.do_inference == 1:
+            self.nof_targs_list = 4,
+            self.nof_targs_probs = 1,
+            if self.debug_mode_en == 1:
+                self.add_loss_type = "heatmap"
+            if self.debug_mode_en == 0:
+                self.add_loss_type = "none"
 
         self.curr_device_str = 'cuda' # trainig / validation / testing device 'cuda'/'cpu'
         #self.curr_device_str = 'cpu'
         self.make_batch_device_str = 'cpu' # device for batch making 'cuda'/'cpu'
-        #self.make_batch_device_str = 'cuda'
         self.ass_device_str = 'cuda' # find best assigignment device 'cuda'/'cpu'. checks all possibilities nof_targs! obtions up to 10 targets with cuda otherwis very slow.
         self.nof_parts = 200 # nof particles on trainng/testing
         self.train_nof_parts_val = 100 # nof particles on validation
@@ -103,22 +95,14 @@ class OptConfig(FrozenClass):
         self.dont_train_tss_list = []  # use nn3 on selected time-steps but dont train on them
         self.atrapp_s1_is_mu_not_sample  = 1 #ATRAPP first particle advancing is sample or expectation
 
-        temp_global_en_th = 1 #local var, maskes enable_batch_thread1 and batch_nof_threads1
-        self.enable_batch_thread = 0  # runs a seperate thread that makes batches while GPU is trainig and adds to awating batches list TODO delete
-        self.batch_nof_threads = 0  #  splits the construction of a batch to seperate threads to shorten the batch making time TODO delete
 
-        #debug_total_nof_batches_train = 1              # number of batches on debug mode
         self.model_mode = "attention"        # use segmentaion network
-        #model_mode = "classification"     #use classification network
-        #model_mode = "masked_class"       #use classification network masked by segmentaion network
 
         self.do_paint_make_batch = 0 # paints making of the input batch (for debug purposes)
         self.dont_print_progress = 0 # doesnt print progress precentage (for when cant delete written tines)
 
         self.is_random_seed = 0 # use random seed or self.seed
         self.seed = 18 #seed if  not self.is_random_seed
-        self.seed = 6 #seed if  not self.is_random_seed
-        self.seed = 17 #seed if  not self.is_random_seed
 
         self.tau = 1 # ATRAPP
         self.sig_u = 0.1 # ATRAPP
@@ -131,7 +115,6 @@ class OptConfig(FrozenClass):
         self.ospa_c_for_targ_ass = self.ospa_c_for_dice # OSPA for best targets-estimations assighnment
         self.learning_rate = 0.0001#.000001
 
-
         self.make_new_trajs = 0 # ATRAPP experiment just make new trajectories
         self.inference_do_compare = 1# inference comapre with and without self.nn3_skip
         self.inference_mode = 'paint' # inferance paints batch using do_paint_batch1
@@ -141,7 +124,6 @@ class OptConfig(FrozenClass):
         self.debug_prints = 1 # prints debug prints
 
 
-        self.nof_ckpnts_keep = 5 # number of checkpoints to keep of save_every saved models
         ##########################
         self.sensor_active_dist = 20 # ATRAPP
         self.cheat_first_particles = 1 # start particles in real locations
@@ -156,19 +138,12 @@ class OptConfig(FrozenClass):
             self.nof_reps_in_batch = 1
             self.batch_size = 5
             self.nof_batches_per_epoch = 2
-            self.nof_epochs = 3
-            if self.heatmap_paint_heatmaps:
-                self.batch_size = 1
-                self.nof_batches_per_epoch = 1
-                self.nof_epochs = 1
-                self.learning_rate = 0
         else:
             self.nof_reps_in_batch = 1
             self.batch_size = int(2*self.nof_reps_in_batch)
             self.nof_batches_per_epoch = 10000/self.batch_size
             self.nof_batches_per_epoch = 2
             self.nof_epochs = 100
-
         if self.do_inference and self.inference_mode == 'eval':
             if self.debug_mode_en:
                 self.train_nof_ts_with_grad = 100
@@ -190,15 +165,12 @@ class OptConfig(FrozenClass):
             self.add_loss_type = "none"
             self.nof_reps_in_batch = 1
             self.nof_steps = 100
-            #self.nof_targs = 1
-            #self.nof_parts = 100
             self.batch_size = 1
             self.nof_batches_per_epoch =100
             self.nof_epochs = 1
 
         self.same_noise_to_all_meases = 0 # ATRAPP training
         self.same_batches_for_all_epochs = 0 # all epochs have the same batches
-
         self.state_vector_dim = 4 # for internal  classes
         self.nn3_state_vector_dim = 2  # for nn3 TODO add to LINUX run
         self.lh_sig_sqd = 1 # ATRAPP
@@ -215,54 +187,17 @@ class OptConfig(FrozenClass):
         self.cheat_get_true_vels_how_many = 100 # for cheat_get_true_vels
 
 
-
-
         self.get_z_for_particles_at_timestep_torch_add_noise = False # ATRAPP for predicted  measurements for a state on weighting
         self.cheat_dont_add_noise_to_meas = 0 # ATRAPP no noise added to sensor model
 
         self.path2proj = ""
         self.debug_total_nof_batches_train = 1
 
-        if not temp_global_en_th:
-            print("temp_global_en_th = False")
-            self.enable_batch_thread = False
-            self.batch_nof_threads = 0
-
         self.proj2datasets_path = "../lfpf0/particles/orig_motion"
         self.record_prefix = "ff_" # save checkpoint name file prefix
 
         self.att_state_dict_to_load_str = att_state_dict_to_load_str1
         self.att_load_checkpoint = 1 if (self.att_state_dict_to_load_str != "" and self.att_state_dict_to_load_str != ".pt")  else 0
-        sanity_check_skip_all = 0
-        if sanity_check_skip_all:
-            self.make_new_trajs = 0
-            self.do_inference = 1
-            #self.is_random_seed = 1
-            self.debug_mode_en = False
-            self.nof_steps=3
-            self.nof_targs_list=1,
-            self.nof_targs_brobs=1,
-            self.nof_parts = 100
-            self.batch_size = 10
-            self.nof_reps_in_batch = 1
-            self.nof_batches_per_epoch = 100
-            self.nof_epochs = 1
-            self.same_noise_to_all_meases = 0
-            self.skip_nn1 = 1
-            self.skip_nn2 = 1
-            self.skip_nn3 = 0
-            self.cheat_first_particles = 1
-            self.cheat_first_locs_only_half_cheat = 0
-            self.cheat_first_vels = 1
-            self.enable_batch_thread = 1
-            print("    **same_noise_to_all_meases** " + str(self.same_noise_to_all_meases))
-            print("**same_batches_for_all_epochs**" + str(self.same_batches_for_all_epochs))
-
-            self.use_ospa_for_loss = 1
-            self.ospa_loss_use_heatmap_desired_loc = 1
-            self.nn3_output_full_particles = 1
-            self.add_loss_type = "none"
-            self.ospa_loss_mult = 0.1
 
         self.nof_steps_val = 10# nof steps for validation
         self.batch_size_val = self.batch_size+1 # batch size for validation
