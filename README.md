@@ -96,13 +96,13 @@ Includes all firles for the Unrolling experiment as well as the motion model on 
 
 
 ### SIS (Unrolling) Experiment Files
-* UrOptConfig.py - default simulation configurations, currently inferencing example with saved weights on the three scenarios and 5 SNRs.
-* UrMotionModel - loads the motion model from "Unrolling/saved_mm_params/", creates trajectories on the fly and used to  propagte particles ofn the SISPF and LF-SISPF. 
-* UrBatchMaker.py - creates ground truth trajectories for the simulation from the files, and creates input and expected output pairs.
-* UnrollignModel.py - runs a single iteration of SISPF/LF-SISPF.
-* loss.py, miscTools.py, graphTools.py, ur_partilces.py original experimet files based on [UrPF project](https://github.com/fgfgama/unrolling-particles) and used in the [3] experimet in "Unrolling/".
-* unrolling_params.py - general and specific experimet configurations.
-* unrolling_state_dict_strs.py - configures the saved weights file name.
+* Unrolling/UrOptConfig.py - default simulation configurations, currently inferencing example with saved weights on the three scenarios and 5 SNRs.
+* Unrolling/UrMotionModel - loads the motion model from "Unrolling/saved_mm_params/", creates trajectories on the fly and used to  propagte particles ofn the SISPF and LF-SISPF. 
+* Unrolling/UrBatchMaker.py - creates ground truth trajectories for the simulation from the files, and creates input and expected output pairs.
+* Unrolling/UnrollignModel.py - runs a single iteration of SISPF/LF-SISPF.
+* Unrolling/: loss.py, miscTools.py, graphTools.py, ur_partilces.py original experimet files based on [UrPF project](https://github.com/fgfgama/unrolling-particles) and used in the [3] experimet in "Unrolling/".
+* Unrolling/unrolling_params.py - general and specific experimet configurations.
+* Unrolling/unrolling_state_dict_strs.py - configures the saved weights file name.
  
 # Simulation
 copy the content of the directory "python_code" to a directory in your project directory.
