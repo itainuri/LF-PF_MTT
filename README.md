@@ -54,7 +54,7 @@ it also contains datasets and optinal creation of more trajectories for the expe
 
 # python_code directory
 Contains all files needed to train and inference the APP and SIS PFs (in the Unrolling directory) and their LF augmented versions. 
-The structure of the data and python classes are designed for easy user specific adaptations (as was dont for the Unrolling PF experiment). To adjust the code edit the content of the functions of the different classes described next.
+The structure of the data and python classes are designed for easy user specific adaptations (as was dont for the Unrolling PF experiment).
 To adjust the code edit the content of the functions of the different classes described next.
 
 ## Data directories 
