@@ -47,7 +47,8 @@ The experimental settings we used for each comparison are taken from their respe
 - [2] describes an MTT radar target tracking on changing number of particles and targets. Our code provides a python version of the APP algorithm as well as a LF augmented APP, LF-APP.
 - [3] describes a comparison between the Sequential Importance Sampling (SIS) PF and their proposed DNN augmented Unrolling PF (UrPF) on a single 10-dimentinal state tracking experiment. Our code implements the SIS as described in [3] and based on their [proposed realization](https://github.com/fgfgama/unrolling-particles) for it. 
 
-  *The cmparison sesults between the UrPF, LF-SIS, the LF-UrPF variations and the SISPF variations, as described in [1], are realized on a separate environmemt that is based  on the same [3] implimentation linked above. 
+  *The cmparison sesults between the UrPF, LF-SIS, the LF-UrPF variations and the SISPF variations, as described in [1], are realized on a separate environmemt that is based  on the same [3] implimentation linked above.
+  in this project we compare LF-SIS and LF-UrPF.
 
 The code provided here supports training and inferencing APP and LF-APP, and SIS and LF-SIS PFs.
 it also contains datasets and optinal creation of more trajectories for the experimental settings described in [2].
