@@ -78,21 +78,24 @@ Includes all firles for the Unrolling experiment as well as the motion model on 
 
 ## Python Files
 * Models.py - APP('attention') or Unrolling('unrolling') mode. different classes are loaded for each mode.
-* OptConfig.py - default simulation configurations, currently inferencing example with saved weights and with 4 targets.
 * ins_runner.py - parses command line and OptConfig.py for the simulation flags and starts simulation on Instructor.
+* Instructor.py - contains the simulation class Instructor, runs PfBatchHandler.
+* KalmanFIlter.py - runs a single step of Kalman Filter.
+* NN_blocks.py - holds the DNN modules.
+* PfBatchHandler.py - runs a full batch trajectory and calculates OSPA and loss.
+
+### APP/LF-APP Experiment Files
+* OptConfig.py - default simulation configurations, currently inferencing example with saved weights and with 4 targets.
 * MotionModel - used to propagte particles from one step (apf) and to cretae new trajectories (target_traj_func).
 * SensorModel - creates a sensor response to a target with specific state. used for measuring (apf) and for creating sensor input on simulation (BatchMaker).
 * target_traj_func.py - creates new ground truth trajectories.
 * BatchMaker.py - loads the ground truth trajectories for the simulation from the files, and creates input and expected output pairs.
-* Instructor.py - contains the simulation class Instructor, runs PfBatchHandler.
-* KalmanFIlter.py - runs a single step of Kalman Filter.
 * Atrapp.py - runs a single step of the APP or LF-APP.
 * AtrappModel.py - runs a single iteration of APP/LF-APP.
-* NN_blocks.py - holds the DNN modules.
 * BatchData.py - holds the particles and weights of an iteration (used in PfBatchHandler).
-* PfBatchHandler.py - runs a full batch trajectory and calculates OSPA and loss.
 
-## Python Unrolling Files
+
+### SIS (Unrolling) Experiment Files
 * UrOptConfig.py - default simulation configurations, currently inferencing example with saved weights on the three scenarios and 5 SNRs.
 * UrMotionModel - loads the motion model from "Unrolling/saved_mm_params/", creates trajectories on the fly and used to  propagte particles ofn the SISPF and LF-SISPF. 
 * UrBatchMaker.py - creates ground truth trajectories for the simulation from the files, and creates input and expected output pairs.
@@ -115,12 +118,12 @@ default paths are in the configurations file, OptConfig.py/UrOptConfig.py:
 model_mode, path2proj, proj2datasets_path, proj2ckpnts_load_path, att_state_dict_to_load_str
 
 ## Execution
-Models.py configures experiment APP/UrSIS (attention/unrollling).
-### APP[2]
+Models.py configures experiment LF and APP/SIS (attention/unrollling).
+### APP/LF-APP [2]
 The file run_ins_runner.bss containes a training python command as used for training the MTT LF-APP to get the results presented on the paper. 
 The default configuration (as in OptConfig.py) inferences APP and LF-APP (with pretrained weights of [1]) with 4 targets.
 
-### SIS[3]
+### SIS/LF-SIS [3]
 The file run_ins_runner_ur.bss containes a training python command as used for training the LF-UrSIS to get the results presented on the paper. 
 The default configuration (as in UrOptConfig.py) inferences SISPF and LF-SISPF (with pretrained weights from [1]).
 
@@ -170,8 +173,7 @@ The default configuration (as in UrOptConfig.py) inferences SISPF and LF-SISPF (
 * att_state_dict_to_load_str # DNN saved weights file name ("mismatched_sensor_array_NN_weights.pt" or "accurate_sensor_array_NN_weights.pt")
 
 more flags are detailed in OptConfig.py.
-## Training commands
-MTT training:
-* set in Model.py: model_mode = "attention"
+## Training/Inferencing commands
+* set in Model.py: model_mode = "attention"/"unrolling"
 * run command:
-python ins_runner.py with desired flags as in run_ins_runner.bss
+python ins_runner.py with default values (OptConfig.py/UrOptConfig.py) or with flags as in run_ins_runner.bss/run_ins_runner_ur.bss
