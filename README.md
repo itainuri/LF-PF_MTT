@@ -1,5 +1,5 @@
-# NA-APF official
-Implementation of the Learning Flock Particle Filter for multi sub-state tracking. from the paper [1]: 
+# LF-PF official
+Implementation of the Learning Flock Particle Filter for multi sub-state tracking. from the paper[1]: 
 
 [1] Itai Nuri and Nir Shlezinger, 2024, "Learning Flock: Enhancing Sets of Particles for
 Multi Sub-State Particle Filtering with Neural
@@ -13,10 +13,10 @@ We experimentally show the improvements in performance, robustness, and latency 
 
 For more information contact: itai5n@gmail.com 
 
-
 # Table of Contents
-- [Introduction](#introduction)
-  * [Terminology](#Terminology)
+- [Terminology](#Terminology)
+- [Introduction](#Introduction)
+- [Experiments](#Experiments)
 - [python_code directory](#python_code-directory)
   * [Data directories](#Data-directories)
     + [particles](#particles)
@@ -28,6 +28,7 @@ For more information contact: itai5n@gmail.com
   * [Paths definitions](#Paths-Definitions)
   * [Execution](#Execution)
   * [Simulation Flags](#Simulation-Flags)
+
   
 # Introduction
 The provided code supports traning and inferencing the experiments as described in [1].
@@ -35,41 +36,43 @@ On [1] we compare our algorithm to two main algorithms:
 - [2] L. Ubeda-Medina, A. F. Garcia-Fernandez, and J. Grajal, “Adaptive auxiliary particle filter for track-before-detect with multiple targets, ”IEEE Trans. Aerosp. Electron. Syst., vol. 53, no. 5, pp. 2317–2330, 2017.  
 - [3] F. Gama, N. Zilberstein, R. G. Baraniuk, and S. Segarra, “Unrolling particles: Unsupervised learning of sampling distributions,” in IEEE International conference on Acoustics, Speech and Signal Processing (ICASSP), 2022, pp. 5498–5502.
 
+# Terminology
+- APP - Auxiliary Parallel Partition (PF) (single target): Auxiliary Particle Filter + Kalman Filter for velocities [2] 
+- LF-APP - Learning Flock Augmented APP: Auxiliary Particle Filter + particles and weights correction LF block + Kalman Filter.
+- SIS - Sequential Importance Sampling [3].
+- LF-SIS - Learning Flock Augmented SIS PF: SIS iteration followed by particles and weights correction LF block.[3]
+
+# Experiments
 The experimental settings we used for each comparison are taken from their respective works:
 - [2] describes an MTT radar target tracking on changing number of particles and targets. Our code provides a python version of the APP algorithm as well as a LF augmented APP, LF-APP.
 - [3] describes a comparison between the Sequential Importance Sampling (SIS) PF and their proposed DNN augmented Unrolling PF (UrPF) on a single 10-dimentinal state tracking experiment. Our code implements the SIS as described in [3] and based on their [proposed realization](https://github.com/fgfgama/unrolling-particles) for it. 
 
-  *The cmparison sesults described in [1] between the UrPF, the LF-UrPF variations and the SIS-PF variations are realized on a seperate enviromnemt that is based  on the same [3] implimentation (linked above). 
+  *The cmparison sesults between the UrPF, LF-SIS, the LF-UrPF variations and the SISPF variations, as described in [1], are realized on a separate environmemt that is based  on the same [3] implimentation linked above. 
 
- 
-Our code is described on the code provided by [3] accessed in
-It presents tracking results (and compares) APP and LF-AP and illustrates tracking accuracy examples and sensors response.
-it also contains the test set trajectories and enables the creations of new trajectories according to the motion model.
-
-# Terminology
-- APF - Auxiliary Particle Filter 
-- APP - Auxiliary Parallel Partition (PF) (single target): APF + Kalman Filter for velocities 
-- LF-APP - Learning Flock Augmented APP: APF + particles and weights correction LF block + Kalman Filter.
-- LF-SIS - Learning Flock Augmented SIS PF: SIS iteration followed by particles and weights correction LF block.
+The code provided here supports training and inferencing APP and LF-APP, and SIS and LF-SIS PFs.
+it also contains datasets and optinal creation of more trajectories for the experimental settings described in [2].
 
 # python_code directory
-Contains all files needed to train and inference the APP and SIS PFs (in the Unrolling directory) and their LF augmented versions. The structure of the data and python classes are designed for easy user specific adaptations (as was dont for the Unrolling PF experiment). 
-To adjust the code edit the content of the functions of the different classes described next.  
+Contains all files needed to train and inference the APP and SIS PFs (in the Unrolling directory) and their LF augmented versions. 
+The structure of the data and python classes are designed for easy user specific adaptations (as was dont for the Unrolling PF experiment). To adjust the code edit the content of the functions of the different classes described next.
+To adjust the code edit the content of the functions of the different classes described next.
 
 ## Data directories 
 includes the ground truth trajectories, the sensors' locations offsets, and the DNN weights.
 
 ### particles 
-Includes the ground truth targets trajectories, the 10,000 testing trajectories of the paper. 
+Includes the ground truth targets trajectories , created according to [2] ([3] trajectories are created on the fly), the 10,000 testing trajectories of the paper.
 more trajectories can be created and saved using this code, 
-new trajectories names and paths configurations are set in "target_traj_func.py" 
+new trajectories names and paths configurations are set in "target_traj_func.py"
+
 ### sensors_locs 
-Includes the mismatched configuration sensors offsets, in which the respective DNN weights were trained on. 
+For [2]. Includes the mismatched configuration sensors offsets, in which the respective DNN weights were trained on. 
 new offsets can be created with the respective configuration flags and by setting create_new flag in "ins_runner.py". 
 
 ### state_dict
 Includes the saved weights for both accurate and mismatched sensors settings. 
 should be loaded for optimal accuracy on respective settings.
+
 ## Python Files
 * Models.py - APP('attention') or Unrolling('unrolling') mode. different classes are loaded for each mode.
 * OptConfig.py - default simulation configurations, currently inferencing example with saved weights and with 4 targets.
@@ -100,9 +103,8 @@ default paths are in the configurations file, OptConfig.py:
 model_mode, path2proj, proj2datasets_path, proj2ckpnts_load_path, att_state_dict_to_load_str
 
 ## Execution
-The file run_ins_runner.bss containes a training python command as used for training the MTT LF-APP to get the results presented on the paper.
+The file run_ins_runner.bss containes a training python command as used for training the MTT LF-APP to get the results presented on the paper. 
 The default configuration (as in Models.py and OptConfig.py) inferences APP and LF-APP (with pretrained weights of [1]) with 4 targets.
-
 
 ## Simulation Flags
 
@@ -115,7 +117,7 @@ The default configuration (as in Models.py and OptConfig.py) inferences APP and 
 * nof_parts # number of particles for simulation
 * do_inaccurate_sensors_locs # 0-calibrated sensors setting 1-miscalibrated setting
 * inaccurate_sensors_locs_offset_var # sensors locations offsets variance (offsets in x and y are normally distributed), loads offsets from "/sensors_locs", if wants to make new offsets change to create new=1 in "ins_runner.py"
-* skip_nn3 # 1-APP, 0-NA-APF
+* skip_nn3 # 1: APP, 0: LF-APP
 * dont_print_progress # prints batch/(total batches) ratio with ">>"
 * is_random_seed # 1-random seed, 0-seed="seed" (same seed for python, pytorch and numpy)
 * seed # seed to use for python, pytorch and numpy (if  is_random_seed=0)
