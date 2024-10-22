@@ -1,7 +1,7 @@
 # NA-APF official
-Implementation of the Learning Flock Particle Filter for multi sub-state tracking. from the paper[1]: 
+Implementation of the Learning Flock Particle Filter for multi sub-state tracking. from the paper [1]: 
 
-Itai Nuri and Nir Shlezinger, 2024, "Learning Flock: Enhancing Sets of Particles for
+[1] Itai Nuri and Nir Shlezinger, 2024, "Learning Flock: Enhancing Sets of Particles for
 Multi Sub-State Particle Filtering with Neural
 Augmentation"
 
