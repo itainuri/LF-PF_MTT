@@ -11,6 +11,9 @@ in the observation model. The DNN architecture applies a fix to all sub-particle
 and can be integrated to most Particle Filter algorithms and in different (and multiple) stages.
 We experimentally show the improvements in performance, robustness, and latency of LF augmentation for radar multi-target tracking, as well its ability to mitigate the effect of a mismatched observation modelling. We also compare and illustrate the advantages of LF over a state-of-the-art DNN-aided PF, and demonstrate that LF enhances both classic PFs as well as DNN-based filters.
 
+For more information contact: itai5n@gmail.com 
+
+
 # Table of Contents
 - [Introduction](#introduction)
   * [Terminology](#Terminology)
