@@ -101,7 +101,7 @@ model_mode, path2proj, proj2datasets_path, proj2ckpnts_load_path, att_state_dict
 
 ## Execution
 The file run_ins_runner.bss containes a training python command as used for training the MTT APP to get the results presented on the paper.
-the default configuration (as in Models.py and OptConfig.py) inferences [2] and [1] over [2] with 4 targets.
+the default configuration (as in Models.py and OptConfig.py) inferences [2] and [1] over [2] (with pretrained weights of [1]) with 4 targets.
 
 
 ## Simulation Flags
