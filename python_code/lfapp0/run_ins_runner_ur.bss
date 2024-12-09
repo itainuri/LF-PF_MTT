@@ -1,12 +1,11 @@
 #!/bin/bash
-cd  ltbd$1
 
 python ins_runner.py --batch_size 1 --nof_batches_per_epoch 10000 --nof_reps_in_batch 1 --train_sec_limit_per_epoch 1300 --num_epochs 10000 --att_lr 0.0001 \
---nof_steps 15 --nof_targs_list "1 " --nof_targs_probs "1 " --nof_targs_val 1 --nof_parts 25 --snr0 20.0 --snr_half_range 0 \
+--nof_steps 15 --nof_targs_list "1 " --nof_targs_probs "1 " --nof_targs_val 1 --nof_parts 25 --snr0 20.0 \
 --nof_steps_val 15 --batch_size_val 1 --nof_batches_per_epoch_val 2000 --train_nof_parts_val 25 --same_batches_for_all_epochs_val 1 --val_time_frack 0 \
 --ospa_p 2.0 --ospa_c 1000000000.0 --ospa_c_for_dice 1000.0 --eval_use_only_picked_ts_for_dice 1 --eval_picked_ts_idx_for_dice 11 \
 --use_ospa_for_loss 1 --ospa_loss_use_heatmap_desired_loc 1 --ospa_loss_mult 1.0 --change_locs_together 0 \
---nn3_output_full_particles 1 --nn3_nof_heads 1 --nn3_state_vector_dim 10 \
+--nn3_state_vector_dim 10 \
 --add_loss_type 'heatmap' --regul_lambda 0.01 --train_loss_type_on_eval 'none' --target_mapping_find_best 0 --wts_var_loss_regul_lambda 0 \
 --train_nof_tss_for_subbatch 1 --train_sb_nof_tss_with_grad 100 --train_sb_lost_targ_dist 30.0 \
 --train_tss_with_grad_min_idx 0 --train_batch_width_with_grad 1 --train_nof_batch_width_per_sb 1 --dont_train_tss_list " 0 1 2 3 4 5 6 7 " \
@@ -20,27 +19,19 @@ python ins_runner.py --batch_size 1 --nof_batches_per_epoch 10000 --nof_reps_in_
 --heatmap_ref_nof_parts 300 --heatmap_detach_peaks 1 \
 --heatmap_ref_advance_ref_and_not_actual 1 --heatmap_ref_use_unwted_var_and_not_wtd 0 --heatmap_min_big_std 0.1 --heatmap_max_small_std 2.0 \
 --heatmap_paint_heatmaps 0 \
---sinkhorn_nof_iters 1000 --sinkhorn_epsilon 1 --sinkhorn_ref_nof_parts 100 \
 --make_new_trajs 0 --only_save_nn3_from_state_dict 0 \
 --sensor_active_dist 2000000 --do_inaccurate_sensors_locs 0 --inaccurate_sensors_locs_offset_var 1.0 --inaccurate_sensors_ref_sensor_model_is_accurate 0 \
---stop_grads_between_steps 1 --grad_decay_between_steps 1 \
 --cheat_first_particles 1 --cheat_first_locs_only_half_cheat 1 --locs_half_cheat_var 0.01 --cheat_first_vels 0 \
 --cheat_first_locs_ref_and_not_from_actual 1 --cheat_first_locs_ref_var 25.0 --cheat_first_vels_ref 1 \
---s1_dont_sample_flag 0 --s1_actual_force_dont_sample 1 --skip_m2_to_nn3_flag 0	--s1_grad_in_weights_flag 0 --do_also_wo_sampling 0 \
---dont_train_nn1 0 --dont_train_nn1_part_emb 0 --load_sd3_to_sd1_flag 0 \
---dont_train_nn3 0 --dont_train_nn3_part_emb 0 --load_sd1_to_sd3_flag 0 \
 --path2proj "" --proj2datasets_path "../particles/orig_motion" \
---proj2ckpnts_load_path "./state_dict/" --proj2ckpnts_save_path "./state_dict/" --record_prefix "gpu$1_" \
---val_every 1 --save_every 1 --nof_ckpnts_keep 10 --save_anyway_every 50 \
---is_random_seed 0 --seed 18 --do_tensorboard 0 \
---device_str 'cuda' --make_batch_device_str 'cpu' --start_method 'spawn' --nprocs 8 --nworkers 0 \
---do_inference 0 --inference_mode 'eval' --inference_from_dir 0 \
+--proj2ckpnts_load_path "./state_dict/" --proj2ckpnts_save_path "./state_dict/" --record_prefix "gpu0_" \
+--is_random_seed 0 --seed 18 \
+--device_str 'cuda' --make_batch_device_str 'cpu' \
+--do_inference 0 --inference_mode 'eval' \
 --do_paint_batch 0 --do_paint_make_batch 0 --dont_print_progress 1 \
---debug_mode_en 0 --debug_total_nof_batches 0 \
---enable_batch_thread 0 --batch_nof_threads 0 --threads_inputs_list_max_len 5 \
---same_noise_to_all_meases 0 --same_batches_for_all_epochs 0 --same_seed_for_all_epochs 0 \
---skip_nn1 1 --skip_nn2 1 --skip_nn3 0 --nn3_skip_tss_list " 10000000000 " --nn3_is_after_kf 1 --do_tensorboard 0 \
---att_nn3_load_ckpnt 0 --att_nn3_chkpnt_str ".pt" \
---model_mode 'unrolling' --att_load_checkpoint 1 --att_ckpnt_type 0 --att_ckpnt_only_load_weights 0 \
---attention_checkpoint 'gpu31_5_2024_06_10_120413_2024_06_17_115803_ur_epoch861_dice-8.5597_bu.pt'
+--debug_mode_en 0 \
+--same_noise_to_all_meases 0 --same_batches_for_all_epochs 0 \
+--skip_nn3 0 --nn3_skip_tss_list " 10000000000 " \
+--model_mode 'unrolling' --att_load_checkpoint 0 \
+--attention_checkpoint '.pt'
 
