@@ -395,7 +395,7 @@ def get_heatmap_loss(self, bd, curr_ts, x_with_t0, desired_x, margins, pix_per_m
                 bdcast_grids_2all_dims = False
                 peaks_for_parts = self.hm.get_heatmap_for_idxinB_ts_targ_in_frame_at_points(
                     ref_out_parts_locs1[relevant_for_set_indcs], ref_out_weights1[relevant_for_set_indcs], peaks0, relevant_parts_indcs_ref1[1][relevant_for_set_indcs],
-                    total_nof_ref_parts, torch.transpose(bd_relevant_parts_detached[:,targ_frame_idx],0,1), bdcast_grids_2all_dims, bd_parts_yy_detached[:,targ_frame_idx], bd_parts_xx_detached[:,targ_frame_idx], idx_in_batch, bd_ref_curr_ts, targ_frame_idx, other_targs_min_distance=other_targs_min_distance, use_other_targets=False)
+                    total_nof_ref_parts, torch.transpose(bd_relevant_parts_detached[:,targ_frame_idx],0,1), bdcast_grids_2all_dims, idx_in_batch, bd_ref_curr_ts, targ_frame_idx, other_targs_min_distance=other_targs_min_distance, use_other_targets=False)
                 peaks_for_parts = peaks_for_parts[0]
         #peaks_for_parts = torch.maximum(torch.tensor((picks_none_min_peak,), device=device), peaks_for_parts).detach()
         peaks_for_parts = torch.where(peaks_for_parts >= torch.tensor((picks_none_min_peak,), device=device), peaks_for_parts, torch.tensor((picks_none_min_peak,), device=device))
@@ -441,8 +441,8 @@ def get_heatmap_loss(self, bd, curr_ts, x_with_t0, desired_x, margins, pix_per_m
                     grids_list = grids_zyx_list[::-1]
                     X, Y = grids_list[-2], grids_list[-1]
                     heatmap_chopped = self.hm.get_sum_of_gaussuans_with_changing_std_divided(
-                    peaks=peak, grids=grids_list, bdcast_grids_2all_dims=True, Y=Y, X=X, full_parts=torch.transpose(grids,0,1),
-                        yy=grids[0], xx=grids[1], weights=weights_to_take, nof_parts=nof_parts_for_std, same_std=True)
+                    peaks=peak, grids=grids_list, bdcast_grids_2all_dims=True, full_parts=torch.transpose(grids,0,1),
+                         weights=weights_to_take, nof_parts=nof_parts_for_std, same_std=True)
         if state_dim == 2:
             heatmap_chopped = heatmap
         else:
