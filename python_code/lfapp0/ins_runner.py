@@ -162,9 +162,6 @@ def make_instructor_args(config):
     parser.add_argument('--heatmap_gauss_location_is_gt_and_not_estimation_ratio', default=config.heatmap_gauss_location_is_gt_and_not_estimation_ratio, type=float, help='desired location between actual and estimated')
     parser.add_argument('--heatmap_paint_heatmaps', default=int(config.heatmap_paint_heatmaps), type=int, help='True/False')
     parser.add_argument('--heatmap_desired_use_ref_hm_and_not_gaussian', default=int(config.heatmap_desired_use_ref_hm_and_not_gaussian), type=int, help='True/False')
-    parser.add_argument('--sinkhorn_nof_iters', default=config.sinkhorn_nof_iters, type=int, help='sinkhorn nof_iters')
-    parser.add_argument('--sinkhorn_epsilon', default=config.sinkhorn_epsilon, type=float, help='sinkhorn, epsilon')
-    parser.add_argument('--sinkhorn_ref_nof_parts', default=config.sinkhorn_ref_nof_parts, type=int, help='sinkhorn_ref_nof_parts')
     ''' For inference '''
     parser.add_argument('--do_inference', default=int(config.do_inference), type=int, help='')
     parser.add_argument('--inference_do_compare', default=int(config.inference_do_compare), type=int, help='')

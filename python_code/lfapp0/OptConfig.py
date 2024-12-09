@@ -193,7 +193,7 @@ class OptConfig(FrozenClass):
         self.path2proj = ""
         self.debug_total_nof_batches_train = 1
 
-        self.proj2datasets_path = "../lfpf0/particles/orig_motion"
+        self.proj2datasets_path = "/particles/orig_motion"
         self.record_prefix = "ff_" # save checkpoint name file prefix
 
         self.att_state_dict_to_load_str = att_state_dict_to_load_str1

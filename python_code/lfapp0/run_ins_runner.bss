@@ -1,7 +1,7 @@
 #!/bin/bash
-cd  lfpf$1
 
-python ins_runner.py --batch_size 50 --nof_batches_per_epoch 300 --nof_reps_in_batch 1 --train_sec_limit_per_epoch 1100 --num_epochs 10000 --att_lr 0.0001 \
+
+python ins_runner.py --batch_size 50 --nof_batches_per_epoch 0 --nof_reps_in_batch 1 --train_sec_limit_per_epoch 1100 --num_epochs 10000 --att_lr 0.0001 \
 --nof_steps 100 --nof_targs_list "1 3 5 8" --nof_targs_probs "3 3 3 1" --nof_targs_val 4 --nof_parts 100 --snr0 20.0  \
 --nof_steps_val 100 --batch_size_val 1000 --nof_batches_per_epoch_val 1 --train_nof_parts_val 100 --same_batches_for_all_epochs_val 1 --val_time_frack 0 \
 --ospa_p 2.0 --ospa_c 100000000000.0 --ospa_c_for_dice 10.0 --eval_use_only_picked_ts_for_dice 0 --eval_picked_ts_idx_for_dice 110000 \
@@ -25,8 +25,8 @@ python ins_runner.py --batch_size 50 --nof_batches_per_epoch 300 --nof_reps_in_b
 --cheat_first_particles 1 --cheat_first_locs_only_half_cheat 1 --locs_half_cheat_var 0.01 --cheat_first_vels 1 \
 --cheat_first_locs_ref_and_not_from_actual 0 --cheat_first_locs_ref_var 10.0 --cheat_first_vels_ref 1 \
 --atrapp_s1_is_mu_not_sample 1 \
---path2proj "" --proj2datasets_path "../particles/orig_motion" \
---proj2ckpnts_load_path "./state_dict/" --proj2ckpnts_save_path "./state_dict/" --record_prefix "gpu$1_" \
+--path2proj "" --proj2datasets_path "particles/orig_motion" \
+--proj2ckpnts_load_path "./state_dict/" --proj2ckpnts_save_path "./state_dict/" --record_prefix "gpu0_" \
 --is_random_seed 0 --seed 18 \
 --device_str 'cuda' --make_batch_device_str 'cpu' \
 --do_inference 0 --inference_mode 'eval' \
