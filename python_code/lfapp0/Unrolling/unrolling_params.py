@@ -13,7 +13,7 @@ Kthres_to_divide_ref =3
 #Kthres = 0#K//3 # Threshold for resampling
 
 SNRstart = 0
-SNRstart = 5
+SNRstart = 0
 SNRend = SNRstart
 SNRpoints = 1
 #SNRpoints = 2 #itai

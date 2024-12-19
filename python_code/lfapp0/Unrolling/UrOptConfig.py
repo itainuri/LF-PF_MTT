@@ -95,7 +95,7 @@ class OptConfig(FrozenClass):
         self.model_mode = "unrolling"        # use segmentaion network
 
         self.do_paint_make_batch = 0 # paints making of the input batch (for debug purposes)
-        self.dont_print_progress = 0
+        self.dont_print_progress = 1
 
         self.is_random_seed = 0
         self.seed = 18
