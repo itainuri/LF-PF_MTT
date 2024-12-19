@@ -382,11 +382,6 @@ def _mp_fn(index, args):
     output = ins.start()
     if not opt.do_inference or not opt.inference_mode == 'paint':
         avg_loss, avg_dice, all_epochs_time, ratio_loss, ratio_dice, avg_loss_ts, avg_dice_ts, (avg_atrapp_time, avg_nn3_time, avg_meas_time) = output
-        if avg_dice_ts is not None:
-            print("avg_dice_ts[0]")
-            print(avg_dice_ts[0])
-            print("avg_dice_ts[1]")
-            print(avg_dice_ts[1])
 
 if __name__ == '__main__':
     print(" __name__ == __main__, running instructor")

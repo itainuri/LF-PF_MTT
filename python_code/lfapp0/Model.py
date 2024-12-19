@@ -1,7 +1,7 @@
 
 
 model_mode = "attention"
-model_mode = "unrolling"
+#model_mode = "unrolling"
 
 if model_mode == "attention":
     from BatchMaker import PfDataVars

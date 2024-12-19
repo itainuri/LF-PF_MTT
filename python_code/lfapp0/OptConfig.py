@@ -99,7 +99,7 @@ class OptConfig(FrozenClass):
         self.model_mode = "attention"        # use segmentaion network
 
         self.do_paint_make_batch = 0 # paints making of the input batch (for debug purposes)
-        self.dont_print_progress = 0 # doesnt print progress precentage (for when cant delete written tines)
+        self.dont_print_progress = 1 # doesnt print progress precentage (for when cant delete written tines)
 
         self.is_random_seed = 0 # use random seed or self.seed
         self.seed = 18 #seed if  not self.is_random_seed

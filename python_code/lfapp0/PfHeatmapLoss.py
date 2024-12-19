@@ -352,7 +352,7 @@ def get_heatmap_loss(self, bd, curr_ts, x_with_t0, desired_x, margins, pix_per_m
     def get_desired_heatmap(grids, prts_locs_per_iter, weights_per_iter, desired_x_locs, is_single_peak, do_only_relevant_ref_particles, use_other_targets, bdcast_grids_2all_dims):
         if not self.opt.heatmap_desired_use_ref_hm_and_not_gaussian:
             #bdcast_grids_2all_dims = True
-            desireds = self.hm.get_big_gaussian_peaks_from_parts_wo_grad_per_targ(grids, bdcast_grids_2all_dims, torch.unsqueeze(X_pnts, 0), torch.unsqueeze(Y_pnts, 0), desired_x_locs, idx_in_batch, bd_ts, bd_ref_all_ts_avg_sqd_dists_big_std)
+            desireds = self.hm.get_big_gaussian_peaks_from_parts_wo_grad_per_targ(grids, bdcast_grids_2all_dims, desired_x_locs, idx_in_batch, bd_ts, bd_ref_all_ts_avg_sqd_dists_big_std)
             other_targ_indcs = torch.where(torch.arange(desireds.shape[0]) != targ_frame_idx)[0]
             desireds = torch.cat((desireds[targ_frame_idx:targ_frame_idx + 1], torch.sum(desireds[other_targ_indcs], dim=0).unsqueeze(0)), dim=0)
             ref_out_parts_locs, ref_out_weights, peaks_at_ref, relevant_parts_indcs5 = desired_from_heatmap_get_bd_ref_peaks_and_parts(
